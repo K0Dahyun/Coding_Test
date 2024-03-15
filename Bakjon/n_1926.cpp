@@ -8,7 +8,6 @@ using namespace std;
 
 int n, m;
 int map[MAX][MAX];
-bool visited[MAX][MAX];
 queue<pair<int, int>> q;
 
 int dx[4] = {-1, 0, 1, 0};
@@ -19,7 +18,7 @@ int BFS(int x, int y) {
     int result = 1;
 
     q.push({x, y});
-    visited[x][y] = true;
+    map[x][y] = 0;
 
     while(!q.empty()) {
         cx = q.front().first;
@@ -32,9 +31,9 @@ int BFS(int x, int y) {
 
             if(nx >= n || ny >= m || nx < 0 || ny < 0) continue;
 
-            if(map[nx][ny] && !visited[nx][ny]) {
-                visited[nx][ny] = true;
+            if(map[nx][ny]) {
                 q.push({nx, ny});
+                map[nx][ny] = 0;
                 result++;
             }
         }
@@ -45,7 +44,9 @@ int BFS(int x, int y) {
 
 
 int main() {
-    vector<int> result;
+    int max = 0;
+    int count = 0;
+    int result;
 
     cin >> n >> m;
 
@@ -57,14 +58,20 @@ int main() {
 
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
-            if(map[i][j] && !visited[i][j]) {
-                result.push_back(BFS(i, j));
+            if(map[i][j]) {
+                result = (BFS(i, j));
+                if(max < result) {
+                    max = result;
+                }
+                count++;
             }
         }
     }
 
-    cout << result.size() << endl;
+    cout << count << endl;
+    cout << max << endl;
 
-    cout << *max_element(result.begin(), result.end()) << endl;
+    return 0;
+
 
 }
