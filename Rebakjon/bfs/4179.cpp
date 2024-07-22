@@ -5,123 +5,72 @@
 
 using namespace std;
 
-// 4 4
-// ####
-// #JF#
-// #..#
-// #..#
+int dx[4] = {-1, 0, 1, 0};
+int dy[4] = {0, -1, 0, 1};
 
-// Fail
+int n, m;
+vector<vector<int>> escape_time; // -1 - 간적없음, 0 - 불전파
+vector<vector<bool>> map; // 1 - 갈수없음, 0 - 갈수있음
+queue<pair<int, int>> q; // 불과 지훈이를 넣고, 불을 먼저 한칸 씩 번지게 한 후 지훈이를 이동시킴 
 
 int main() {
-    ios::sync_with_stdio(0);
-    cin.tie(0);cout.tie(0);
-
-    int dx[4] = {-1, 0, 1, 0};
-    int dy[4] = {0, -1, 0, 1};
-
-    int n, m;
     cin >> n >> m;
 
-    vector<vector<int>> fire_time(n, vector<int>(m, 0));
-    vector<vector<int>> escape_time(n, vector<int>(m, 0));
-    queue<pair<int, int>> escape;
-    queue<pair<int, int>> fire;
+    escape_time.resize(n, vector<int>(m, -1)); // -1 - 방문한적없음
+    map.resize(n, vector<bool>(m, true));
+
+    int start_x, start_y;
 
     for(int i = 0; i < n; i++) {
-        string temp;
-        cin >> temp;
         for(int j = 0; j < m; j++) {
-            if(temp[j] == 'F') {
-                fire.push({i, j});
-                fire_time[i][j] = 1;
+            char temp;
+            cin >> temp;
+
+            if(temp == '#') 
+                map[i][j] = false;
+            else if(temp == 'F') {
+                map[i][j] = false;
+                q.push({i, j}); // 불을 먼저 큐에 넣음
             }
-            if(temp[j] == 'J') {
-                escape.push({i, j});
-                escape_time[i][j] = 1;
+            else if(temp == 'J') { // 불을 먼저 다 넣고, 지훈이를 넣어여 하기 때문에 잠시 저장
+                start_x = i;
+                start_y = j;
             }
-            if(temp[j] == '#') {
-                fire_time[i][j] = -1;
-                escape_time[i][j] = -1;
-            }
-            
         }
     }
 
-    // Fire spread time
-    int fcx, fcy; // fire current pose
-    int fnx, fny; // fire next pose
+    q.push({start_x, start_y});
 
-    while(!fire.empty()) {
-        fcx = fire.front().first;
-        fcy = fire.front().second;
+    escape_time[start_x][start_y] = 1;
 
-        fire.pop();
+    while(!q.empty()) {
+        int cx = q.front().first;
+        int cy = q.front().second;
 
-        for(int i = 0; i < 4; i++) {
-            fnx = fcx + dx[i];
-            fny = fcy + dy[i];
+        q.pop();
 
-            if(fnx >= n || fny >= m || fnx < 0 || fny < 0)
-                continue;
-                    
-            if(fire_time[fnx][fny] == 0) {
-                fire_time[fnx][fny] = fire_time[fcx][fcy] + 1;
-                fire.push({fnx, fny});
-            }
-
+        if(map[cx][cy] == 0 && cx == 0 || cy == 0 || cx == n - 1 || cy == m - 1) {
+            cout << escape_time[cx][cy] << endl;
+            return 0;
         }
-    }
-
-    // cout << "fire" << endl;
-    // for(int i = 0; i < n; i++) {
-    //     for(int j = 0; j < m; j++) {
-    //         cout << fire_time[i][j] << " ";
-    //     }
-    //     cout << endl;
-    // }
-
-    // Escape time
-    int ecx, ecy; // escape current pose
-    int enx, eny; // escape next pose
-
-    while(!escape.empty()) {
-        ecx = escape.front().first;
-        ecy = escape.front().second;
-
-        escape.pop();
 
         for(int i = 0; i < 4; i++) {
-            enx = ecx + dx[i];
-            eny = ecy + dy[i];
+            int nx = cx + dx[i];
+            int ny = cy + dy[i];
 
-            if(enx >= n || eny >= m || enx < 0 || eny < 0)
+            if(nx < 0 || ny < 0 || nx >= n || ny >= m)
                 continue;
             
-            if(escape_time[enx][eny] == -1)
+            if(!map[nx][ny]) // 벽이나 불이라면
                 continue;
-
-            if(escape_time[ecx][ecy] + 1 >= fire_time[enx][eny])
-                continue;
-
-            escape_time[enx][eny] = escape_time[ecx][ecy] + 1;
-            escape.push({enx, eny});
-
-            if(enx == 0 || enx == n - 1 || eny == 0 || eny == m - 1) {
-                cout << escape_time[enx][eny]<< endl;
-                // cout << "escape" << endl;
-                // for(int i = 0; i < n; i++) {
-                //     for(int j = 0; j < m; j++) {
-                //         cout << escape_time[i][j] << " ";
-                //     }
-                //     cout << endl;
-                // }
-                return 0;
+            
+            if(escape_time[nx][ny] == -1) { // 불이 전파되지 않았고, 방문한 적이 없다면
+                escape_time[nx][ny] = escape_time[cx][cy] + 1;
+                map[nx][ny] = false;
+                q.push({nx, ny});
             }
-                    
         }
     }
 
     cout << "IMPOSSIBLE" << endl;
-    return 0;
 }
