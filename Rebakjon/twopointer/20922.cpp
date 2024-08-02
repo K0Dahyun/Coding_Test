@@ -23,7 +23,6 @@ int main() {
         max_length = max(end - start + 1, max_length);
     }
 
-
     cout << max_length << endl;
 
     return 0;
