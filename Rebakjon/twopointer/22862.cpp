@@ -1,34 +1,33 @@
 #include <iostream>
 #include <vector>
+
 using namespace std;
 
-bool visited[100001];
-
 int main() {
-    ios_base::sync_with_stdio(0);
-    cin.tie(0);
-    cout.tie(0);
+    int n, k;
+    cin >> n >> k;
     
-    long long n;
-    cin >> n;
+    vector<int> v(n);
     
-    vector<int> v(n + 1);
-    
-    for(long long i = 0; i < n; i++)
+    for(int i = 0; i < n; i++)
         cin >> v[i];
     
     int start = 0;
-    int end = 1;
-    visited[v[start]] = true;
-    long long answer = n * (n + 1) / 2;
+    int end = 0;
+    int odd_cnt = 0; // 홀수
+    int answer = 0;
     
     while(end < n) {
-        if(visited[v[end]]) {
-            visited[v[start++]] = false;
-            answer -= n - end;
+        if(odd_cnt > k) {
+            if(v[start++] % 2 != 0)
+                odd_cnt--;
         }
-        else
-            visited[v[end++]] = true;
+        else {
+            if(v[end] % 2 != 0)
+                odd_cnt++;
+            end++;
+            answer = end - start - odd_cnt > answer ? end - start - odd_cnt : answer;
+        }
     }
     
     cout << answer << endl;
