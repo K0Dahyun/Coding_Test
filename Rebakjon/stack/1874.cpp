@@ -6,7 +6,7 @@ using namespace std;
 
 int main() {
 	ios::sync_with_stdio(0);
-	cin.tie(0);
+	cin.tie(0); cout.tie(NULL);
 
     int n;
     cin >> n;
@@ -30,13 +30,13 @@ int main() {
             answer.push_back('-');
         }
         else {
-            cout << "NO" << endl;
+            cout << "NO";
             return 0;
         }
     }
 
     for(int i = 0; i < answer.size(); i++)
-        cout << answer[i] << endl;
+        cout << answer[i] << "\n";
 
     return 0;
 
