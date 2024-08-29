@@ -11,7 +11,7 @@ int inputs[13];
 void dfs(int start, int depth) {
     if(depth == 6) {
         for(int i = 0; i < 6; i++)
-            cout << arr[i];
+            cout << arr[i] << " ";
         cout << "\n";
         return;
     }
