@@ -9,6 +9,7 @@
         "algorithm": "cpp",
         "array": "cpp",
         "string_view": "cpp",
-        "vector": "cpp"
+        "vector": "cpp",
+        "deque": "cpp"
     }
 }
