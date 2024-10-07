@@ -29,7 +29,6 @@ int main() {
         cout << 0;
     else
         cout << Maxmin;
-
-
-
+    
+    return 0;
 }

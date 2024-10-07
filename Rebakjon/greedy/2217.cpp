@@ -5,25 +5,20 @@
 using namespace std;
 
 int main() {
-    int number; // loop number
-    cin >> number;
+    int n; // loop n
+    cin >> n;
 
-    vector<int> loop;
-    for(int i = 0; i < number; i++) {
-        int temp;
-        cin >> temp;
-        loop.push_back(temp);
-    }
+    vector<int> loop(n);
+    for(int i = 0; i < n; i++)
+        cin >> loop[i];
 
     sort(loop.begin(), loop.end());
 
-    int max = loop[number - 1];
+    int max_weight = 0;
 
-    for(int i = number - 1; i >= 0; i--) {
-        int cur_weight = loop[i] * (number - i);
-        if(cur_weight > max)
-            max = cur_weight;
+    for(int i = 0; i < n; i++) {
+        max_weight = max(max_weight, (n - i) * loop[i]);
     }
 
-    cout << max << endl;
+    cout << max_weight << endl;
 }
