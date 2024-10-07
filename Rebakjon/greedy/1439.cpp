@@ -8,31 +8,17 @@ int main() {
     string input;
     cin >> input;
 
-    int zero_cnt = 0;
-    int one_cnt = 0;
+    int cnt = 0;
 
-    if(input[0] == '0')
-        zero_cnt++;
-    else
-        one_cnt++;
-
-    char prev = input[0];
-
-    for(int i = 1; i < input.size(); i++) {
-        if(input[i] != prev) {
-            if(input[i] == '0')
-                zero_cnt++;
-            else
-                one_cnt++;
-            
-            prev = input[i];
-        }
+    for(int i = 0; i < input.size(); i++) {
+        if(input[i] != input[i + 1])
+            cnt++;
     }
 
-    if(zero_cnt > one_cnt)
-        cout << one_cnt << endl;
+    if(cnt == 0)
+        cout << cnt;
     else
-        cout << zero_cnt << endl;
-
+        cout << cnt / 2;
+        
     return 0;
 }
