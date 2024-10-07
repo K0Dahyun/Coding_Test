@@ -8,31 +8,21 @@ int main() {
     int n;
     cin >> n;
 
-    vector<int> a;
-    vector<int> b;
+    vector<int> a(n);
+    vector<int> b(n);
 
-    for(int i = 0; i < n; i++) {
-        int temp_a;
-        cin >> temp_a;
-        a.push_back(temp_a);
-    }
+    for(int i = 0; i < n; i++)
+        cin >> a[i];
 
-    for(int i = 0; i < n; i++) {
-        int temp_b;
-        cin >> temp_b;
-        b.push_back(temp_b);
-    }
+    for(int i = 0; i < n; i++)
+        cin >> b[i];
     
-    int min_sum = 0;
+    sort(a.begin(), a.end());
+    sort(b.begin(), b.end(), greater<>());
 
-    while(!a.empty()) {
-        int a_max_index = max_element(a.begin(), a.end()) - a.begin();
-        int b_min_index = min_element(b.begin(), b.end()) - b.begin();
+    int sum = 0;
+    for(int i = 0; i < n; i++)
+        sum += a[i] * b[i];
 
-        min_sum += *max_element(a.begin(), a.end()) * *min_element(b.begin(), b.end());
-        a.erase(a.begin() + a_max_index);
-        b.erase(b.begin() + b_min_index);
-    }
-
-    cout << min_sum << endl;
+    cout << sum << endl;
 }
