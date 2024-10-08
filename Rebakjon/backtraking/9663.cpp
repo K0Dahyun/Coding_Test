@@ -10,7 +10,7 @@ vector<int> visited(15); // 행(퀸 번호) - 열
 bool check(int q_cnt) {
     for(int i = 0; i < q_cnt; i++) {
         // 어쩌피 행은 순차적으로 돌아가고, 열이 같은데 대각선으로 같은지 확인하면 됌
-        if(visited[q_cnt] == visited[i] || q_cnt - i == abs(visited[q_cnt] - visited[i]));
+        if(visited[q_cnt] == visited[i] || q_cnt - i == abs(visited[q_cnt] - visited[i]))
             return false;
     }
     return true;
