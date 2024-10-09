@@ -1,33 +1,30 @@
-#include <iostream>
 #include <vector>
+#include <iostream>
 
 using namespace std;
 
+int count[200000];
+
 int main() {
-	ios::sync_with_stdio(false);
-	cin.tie(NULL);
-	cout.tie(NULL);
-    
     int n, k;
     cin >> n >> k;
 
-    vector<int> v(n, 0);
-    vector<int> count(200001, 0);
+    vector<int> arr(n);
 
+    int maxsize = 0;
     int start = 0;
-    int max_length = 0;
 
-    for(int end = 0; end < n; end++) {
-        cin >> v[end];
-        count[v[end]]++;
+    for(int i = 0; i < n; i++) {
+        cin >> arr[i];
+        count[arr[i]]++;
 
-        while(count[v[end]] > k)
-            count[v[start++]]--;
-
-        max_length = max(end - start + 1, max_length);
+        while(count[arr[i]] > k)
+            count[arr[start++]]--;
+        
+        maxsize = maxsize > i - start + 1 ? maxsize : i - start + 1;
     }
 
-    cout << max_length << endl;
+    cout << maxsize;
 
     return 0;
 }
