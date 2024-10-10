@@ -20,10 +20,6 @@ int main() {
     while(!q.empty()) {
         int cur = q.front();
         q.pop();
-        
-        // Wrong range
-        if(cur < 0 || cur > 100001)
-            continue;
             
         // Meet
         if(cur == k) {
