@@ -8,27 +8,26 @@ using namespace std;
 int dx[4] = {-1, 0, 1, 0};
 int dy[4] = {0, -1, 0, 1};
 
-string map[1001];
-int fire_time[1001][1001];
-int escape_time[1001][1001];
+vector<string> map;
+vector<vector<int>> fire_time;
+vector<vector<int>> escape_time;
 
 queue<pair<int, int>> fire;
 queue<pair<int, int>> escape;
 
 int main() {
     ios_base::sync_with_stdio(0);
-	cin.tie(0);
+    cin.tie(0); cout.tie(0);
 
     int n, m;
     cin >> n >> m;
 
+    map.resize(n);
+    fire_time.resize(n, vector<int>(m, -1));
+    escape_time.resize(n, vector<int>(m, -1));
+
     for(int i = 0; i < n; i++)
         cin >> map[i];
-    
-	for (int i = 0; i < n; i++) {
-		fill(escape_time[i], escape_time[i] + m, -1);
-		fill(fire_time[i], fire_time[i] + m, -1);
-	}
     
     for(int i = 0; i < n; i++) {
         for(int j = 0; j < m; j++) {
@@ -43,7 +42,6 @@ int main() {
         }
     }
 
-    // 불 전파 속도
     while(!fire.empty()) {
         int cx = fire.front().first;
         int cy = fire.front().second;
@@ -54,10 +52,10 @@ int main() {
             int nx = cx + dx[i];
             int ny = cy + dy[i];
 
-            if(nx >= n || ny >= m || nx < 0 || ny < 0)
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m)
                 continue;
             
-            if(fire_time[nx][ny] >= 0 || map[nx][ny] == '#')
+            if(fire_time[nx][ny] > -1 || map[nx][ny] == '#')
                 continue;
             
             fire_time[nx][ny] = fire_time[cx][cy] + 1;
@@ -66,7 +64,6 @@ int main() {
         }
     }
 
-    // 탈출 속도
     while(!escape.empty()) {
         int cx = escape.front().first;
         int cy = escape.front().second;
@@ -77,16 +74,15 @@ int main() {
             int nx = cx + dx[i];
             int ny = cy + dy[i];
 
-            // 도착
-            if(nx < 0 || ny < 0 || nx >= n || ny >= m) {
-                cout << escape_time[cx][cy] + 1 << endl;
+            if(nx < 0 || nx >= n || ny < 0 || ny >= m) {
+                cout << escape_time[cx][cy] + 1;
                 return 0;
             }
             
-            if(escape_time[nx][ny] >= 0 || map[nx][ny] == '#')
+            if(escape_time[nx][ny] > -1 || map[nx][ny] == '#')
                 continue;
 
-            if(fire_time[nx][ny] != -1 && fire_time[nx][ny] <= escape_time[cx][cy] + 1)
+            if(fire_time[nx][ny] > -1 && fire_time[nx][ny] <= escape_time[cx][cy] + 1)
                 continue;
             
             escape_time[nx][ny] = escape_time[cx][cy] + 1;
