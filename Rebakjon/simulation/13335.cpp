@@ -35,7 +35,7 @@ int main() {
         ans++;
     }
 
-    cout << ans + l;
+    cout << ans + w;
 
     return 0;
 }
