@@ -1,37 +1,40 @@
-#include <iostream>
-#include <vector>
+    #include <iostream>
+    #include <vector>
 
-using namespace std;
+    using namespace std;
 
-int main() {
-    int n, s;
-    cin >> n >> s;
+    int main() {
+        ios_base::sync_with_stdio(0);
+        cin.tie(0); cout.tie(0);
 
-    vector<int> v(n);
+        int n, s;
+        cin >> n >> s;
 
-    for(int i = 0; i < n; i++)
-        cin >> v[i];
-    
-    int start = 0;
-    int end = 0;
-    int sum = 0;
-    int cnt = 0;
+        vector<int> v(n);
 
-    while(end <= n) {
-        if(sum < s) {
-            if(end == n)
-                break;
-            sum += v[end++];
+        for(int i = 0; i < n; i++)
+            cin >> v[i];
+
+        int start = 0;
+        int end = 0;
+        int sum = 0;
+        int cnt = 0;
+
+        while(end <= n) {
+            if(sum < s) {
+                if(end == n)
+                    break;
+                sum += v[end++];
+            }
+            else if(sum > s)
+                sum -= v[start++];
+            else {
+                cnt++;
+                sum -= v[start++];
+            }
         }
-        else if(sum > s)
-            sum -= v[start++];
-        else {
-            cnt++;
-            sum += v[end++];
-        }
-    }   
 
-    cout << cnt << endl;
-
-    return 0;
-}
+        cout << cnt;
+        
+        return 0;
+    }
